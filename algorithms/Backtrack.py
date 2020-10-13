@@ -25,3 +25,6 @@ class BacktrackSolution:
                 self.board.unplace_queen(row_index, col_index)
 
         return False
+    
+    def get_board(self):
+        return self.board.board
