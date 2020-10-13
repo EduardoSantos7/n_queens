@@ -5,6 +5,8 @@ from flask import jsonify
 from flask import request
 from flask_cors import CORS
 
+from DBhandler import DBhandler, Solution
+
 sys.path.append('../')
 from algorithms.Backtrack import BacktrackSolution
 
@@ -20,6 +22,12 @@ def place_n_queens():
     is_solution = b.process()
     print(is_solution)
     if is_solution:
+        db = DBhandler()
+        bt_solution = Solution()
+        bt_solution.queens = queens
+        bt_solution.bt_solution = b.board.board
+        db.add(bt_solution)
+        db.commit()
         return jsonify(b.board.board)
 
     return jsonify({
