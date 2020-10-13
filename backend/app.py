@@ -18,21 +18,26 @@ CORS(app)
 @app.route('/place_n_queens', methods=["GET"])
 def place_n_queens():
     queens = request.args.get('queens', type=int)
-    b = BacktrackSolution(queens)
-    is_solution = b.process()
-    print(is_solution)
-    if is_solution:
-        db = DBhandler()
-        bt_solution = Solution()
-        bt_solution.queens = queens
-        bt_solution.bt_solution = b.board.board
-        db.add(bt_solution)
-        db.commit()
-        return jsonify(b.board.board)
 
-    return jsonify({
-        'error': f'Could not get the answer for {queens} queens'
-    })
+    db = DBhandler()
+    result = {}
+
+    for n in range(1, queens + 1):
+        record = db.get_solution(n)
+
+        if record:
+            result[n] = record.bt_solution
+            continue
+
+        bt = BacktrackSolution(n)
+        is_solution = bt.process()
+
+        if is_solution:
+            result[n] = bt.get_board()
+            db.add(Solution(n, result[n]))
+            db.commit()
+
+    return result
 
 
 if __name__ == "__main__":
