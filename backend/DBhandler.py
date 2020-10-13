@@ -16,6 +16,10 @@ class Solution(base):
     queens = Column(Integer, primary_key=True)
     bt_solution = Column(postgresql.ARRAY(Integer, dimensions=2))
 
+    def __init__(self, queens, bt_solution):
+        self.queens = queens
+        self.bt_solution = bt_solution
+
 
 class DBhandler:
     db_string = "postgresql://reysantos7:05120714@localhost:5437/test"
@@ -23,9 +27,12 @@ class DBhandler:
     def __init__(self):
         self.db = create_engine(self.db_string)
         Session = sessionmaker(self.db)
-        self.session = Session()
+        self.session = Session(bind=self.db, autoflush=False)
 
         base.metadata.create_all(self.db)
+
+    def get_solution(self, queens):
+        return self.session.query(Solution).filter(Solution.queens == queens).first()
 
     def add(self, row):
         self.session.add(row)
