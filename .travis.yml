@@ -1,0 +1,6 @@
+language: python
+python:
+    - 3.6
+cache: pip
+install: "pip install -r requirements.txt"
+script: pytest test_queen_algorithms.py
