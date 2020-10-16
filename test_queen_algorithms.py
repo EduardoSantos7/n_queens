@@ -64,5 +64,5 @@ def get_correct_answer(queens):
 @pytest.mark.parametrize(
     "number_of_queens,correct_answer", [(n, get_correct_answer(n)) for n in range(1, 12)])
 def test_n_queens(number_of_queens, correct_answer):
-    solutions = solve_n_queens(number_of_queens use_db=False)
+    solutions = solve_n_queens(number_of_queens, use_db=False)
     assert solutions == correct_answer
