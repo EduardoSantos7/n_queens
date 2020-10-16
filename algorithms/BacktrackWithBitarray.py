@@ -13,7 +13,7 @@ class BacktrackWithBitarraySolution:
         """
         self.queens = N
         self.solutions = 0
-        self.db = db if db else DBhandler()
+        self.db = db
         self.columns = bitarray([False for _ in range(2*N)])
         self.board = [[0 for _ in range(N)] for _ in range(N)]
         self.left_diagonal = bitarray([False for _ in range(2*N)])
@@ -22,11 +22,9 @@ class BacktrackWithBitarraySolution:
     def process(self, row=0):
         if row == self.queens:
             self.solutions += 1
-            # for i in range(len(self.board)):
-            #     print(self.board[i])
-            # print()
-            self.db.add(Solution(self.queens, self.board))
-            self.db.commit()
+            if self.db:
+                self.db.add(Solution(self.queens, self.board))
+                self.db.commit()
             return
 
         for col in range(0, self.queens):
