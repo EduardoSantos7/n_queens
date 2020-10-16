@@ -7,11 +7,13 @@ from algorithms.BacktrackWithBitarray import BacktrackWithBitarraySolution
 from database.DBhandler import DBhandler, Solution
 
 
-def solve_n_queens(queens, use_db=True):
+def solve_n_queens(queens, use_db=False):
 
     if not use_db:
+        s = time.perf_counter()
         bt = BacktrackWithBitarraySolution(queens)
         bt.process()
+        e = time.perf_counter()
         solutions = bt.solutions
     else:
         with DBhandler() as db:
@@ -26,12 +28,12 @@ def solve_n_queens(queens, use_db=True):
 
             e = time.perf_counter()
 
-            if solutions:
-                print(f"{solutions} solutions in {e - s} seconds")
-            else:
-                print(f'No solutions for {queens} queens')
+    if solutions:
+        print(f"{solutions} solutions in {e - s} seconds")
+    else:
+        print(f'No solutions for {queens} queens')
 
-        return solutions or 0
+    return solutions or 0
 
 
 if __name__ == "__main__":
