@@ -7,7 +7,7 @@ from algorithms.BacktrackWithBitarray import BacktrackWithBitarraySolution
 from database.DBhandler import DBhandler, Solution
 
 
-def solve_n_queens(queens, use_db=False):
+def solve_n_queens(queens, use_db=True):
 
     if not use_db:
         s = time.perf_counter()
@@ -22,6 +22,7 @@ def solve_n_queens(queens, use_db=False):
             solutions = len(db.get_solutions(queens))
 
             if not solutions:
+                print("There were not solutions stored in the DB")
                 bt = BacktrackWithBitarraySolution(queens, db=db)
                 bt.process()
                 solutions = bt.solutions
@@ -41,7 +42,7 @@ if __name__ == "__main__":
     while user_input != 'q':
         if user_input.isdecimal():
             n = int(user_input)
-            solve_n_queens(n)
+            solve_n_queens(n, )
         else:
             print("Please type only numbers")
         user_input = input("Type a number N (board of NxN and N queens) or q to finish: ")
