@@ -50,7 +50,7 @@ The table in the database has 3 columns (`id`, `queens (the N)` and `bt_solution
 4) Now you can run test using the next command:
 
     ```python
-    pytest test_queen_algorithms.py
+    pytest test_queen_algorithms.py -v
     ```
     
     ![Alt text](test_results.png?raw=true "After run the test")
