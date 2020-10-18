@@ -26,6 +26,12 @@ N queens uses a number of open source projects to work properly:
 * [Travis CI] - automate tests
 * [Docker] - containers
 
+The algorithm used can be found in this [video], but this solution only give the number of the solutions, so extra modifications were needed to save the boards.
+
+The table in the database has 3 columns (`id`, `queens (the N)` and `bt_solution (the board)`) and looks like this:
+
+![Alt text](solutions_table.png?raw=true "Solution table example")
+
 ### Installation
 -----------------
 
@@ -73,6 +79,7 @@ N queens uses a number of open source projects to work properly:
    [Pytest]: <https://pytest.org/>
    [Travis CI]: <https://travis-ci.org/>
    [Docker]: <https://www.docker.com/>
+   [video]: <https://www.youtube.com/watch?v=u6viVC1fJ9g&t=1134s>
 
    [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>
    [PlGh]: <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>
