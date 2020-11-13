@@ -1,7 +1,9 @@
 import copy
 
 
-def backtrackWithBitarraySolution(queens, columns, left_diagonal,  right_diagonal, board, row=0):
+def backtrackWithBitarraySolution(
+    queens, columns, left_diagonal, right_diagonal, board, row=0
+):
     solutions = []
     if row == queens:
         solutions.append(copy.copy(board))
@@ -19,7 +21,8 @@ def backtrackWithBitarraySolution(queens, columns, left_diagonal,  right_diagona
             board[row] = col
 
             new_solutions = backtrackWithBitarraySolution(
-                queens, columns, left_diagonal,  right_diagonal, board, row=row + 1)
+                queens, columns, left_diagonal, right_diagonal, board, row=row + 1
+            )
             solutions.extend(new_solutions)
 
             columns[col] = 0

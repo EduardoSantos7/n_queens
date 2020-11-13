@@ -20,7 +20,8 @@ def solve_n_queens(queens, use_db=True):
     if not use_db:
         s = time.perf_counter()
         solutions = backtrackWithBitarraySolution(
-            queens, columns, left_diagonal,  right_diagonal, board)
+            queens, columns, left_diagonal, right_diagonal, board
+        )
         e = time.perf_counter()
         print(f"{len(solutions)} solutions in {e - s} seconds")
     else:
@@ -33,7 +34,8 @@ def solve_n_queens(queens, use_db=True):
             if not solutions_in_db:
                 print("There were not solutions stored in the DB")
                 solutions = backtrackWithBitarraySolution(
-                    queens, columns, left_diagonal,  right_diagonal, board)
+                    queens, columns, left_diagonal, right_diagonal, board
+                )
 
             e = time.perf_counter()
 
@@ -41,8 +43,7 @@ def solve_n_queens(queens, use_db=True):
                 solutions = solutions_in_db
                 print(f"{len(solutions_in_db)} solutions in {e - s} seconds")
             elif solutions:
-                solutions_objects = [Solution(queens, board)
-                                     for board in solutions]
+                solutions_objects = [Solution(queens, board) for board in solutions]
                 db.bulk_save_objects(solutions_objects)
                 db.commit()
                 print(f"{len(solutions)} solutions in {e - s} seconds")
@@ -53,8 +54,7 @@ def solve_n_queens(queens, use_db=True):
 
 
 if __name__ == "__main__":
-    user_input = input(
-        "Type a number N (board of NxN and N queens) or q to finish: ")
+    user_input = input("Type a number N (board of NxN and N queens) or q to finish: ")
     while user_input != "q":
         if user_input.isdecimal():
             n = int(user_input)
