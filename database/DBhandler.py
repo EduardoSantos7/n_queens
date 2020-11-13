@@ -27,7 +27,7 @@ class Solution(base):
         server_default=SOLUTIONS_ID.next_value(),
     )
     queens = Column(Integer, nullable=False, index=True)
-    bt_solution = Column(postgresql.ARRAY(Integer, dimensions=2), nullable=False)
+    bt_solution = Column(postgresql.ARRAY(Integer), nullable=False)
 
     def __init__(self, queens, bt_solution):
         self.queens = queens
@@ -51,6 +51,9 @@ class DBhandler:
 
     def get_solutions(self, queens):
         return self.session.query(Solution).filter(Solution.queens == queens).all()
+
+    def bulk_save_objects(self, objects):
+        self.session.bulk_save_objects(objects)
 
     def add(self, row):
         self.session.add(row)

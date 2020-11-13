@@ -3,42 +3,58 @@
 
 import time
 
-from algorithms.BacktrackWithBitarray import BacktrackWithBitarraySolution
+from bitarray import bitarray
+
+from algorithms.BacktrackWithBitarray import backtrackWithBitarraySolution
 from database.DBhandler import DBhandler, Solution
 
 
 def solve_n_queens(queens, use_db=True):
 
+    columns = bitarray([False for _ in range(2 * queens)])
+    board = [0 for _ in range(queens)]
+    left_diagonal = bitarray([False for _ in range(2 * queens)])
+    right_diagonal = bitarray([False for _ in range(2 * queens)])
+    solutions = []
+
     if not use_db:
         s = time.perf_counter()
-        bt = BacktrackWithBitarraySolution(queens)
-        bt.process()
+        solutions = backtrackWithBitarraySolution(
+            queens, columns, left_diagonal,  right_diagonal, board)
         e = time.perf_counter()
-        solutions = bt.solutions
+        print(f"{len(solutions)} solutions in {e - s} seconds")
     else:
         with DBhandler() as db:
 
-            s = time.perf_counter()
-            solutions = len(db.get_solutions(queens))
+            solutions_in_db = db.get_solutions(queens)
 
-            if not solutions:
+            s = time.perf_counter()
+
+            if not solutions_in_db:
                 print("There were not solutions stored in the DB")
-                bt = BacktrackWithBitarraySolution(queens, db=db)
-                bt.process()
-                solutions = bt.solutions
+                solutions = backtrackWithBitarraySolution(
+                    queens, columns, left_diagonal,  right_diagonal, board)
 
             e = time.perf_counter()
 
-    if solutions:
-        print(f"{solutions} solutions in {e - s} seconds")
-    else:
-        print(f"No solutions for {queens} queens")
+            if solutions_in_db:
+                solutions = solutions_in_db
+                print(f"{len(solutions_in_db)} solutions in {e - s} seconds")
+            elif solutions:
+                solutions_objects = [Solution(queens, board)
+                                     for board in solutions]
+                db.bulk_save_objects(solutions_objects)
+                db.commit()
+                print(f"{len(solutions)} solutions in {e - s} seconds")
+            else:
+                print(f"No solutions for {queens} queens")
 
-    return solutions or 0
+    return len(solutions)
 
 
 if __name__ == "__main__":
-    user_input = input("Type a number N (board of NxN and N queens) or q to finish: ")
+    user_input = input(
+        "Type a number N (board of NxN and N queens) or q to finish: ")
     while user_input != "q":
         if user_input.isdecimal():
             n = int(user_input)

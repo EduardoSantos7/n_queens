@@ -1,48 +1,30 @@
-from database.DBhandler import DBhandler, Solution
-from bitarray import bitarray
-
-from utils.Board import Board
+import copy
 
 
-class BacktrackWithBitarraySolution:
-    def __init__(self, N, db=None):
-        """Initialize the board
+def backtrackWithBitarraySolution(queens, columns, left_diagonal,  right_diagonal, board, row=0):
+    solutions = []
+    if row == queens:
+        solutions.append(copy.copy(board))
+        return solutions
 
-        Args:
-            N (int): Number of queens and size of the board (NXN)
-        """
-        self.queens = N
-        self.solutions = 0
-        self.db = db
-        self.columns = bitarray([False for _ in range(2 * N)])
-        self.board = [[0 for _ in range(N)] for _ in range(N)]
-        self.left_diagonal = bitarray([False for _ in range(2 * N)])
-        self.right_diagonal = bitarray([False for _ in range(2 * N)])
+    for col in range(0, queens):
+        if (
+            not columns[col]
+            and not right_diagonal[row - col + queens - 1]
+            and not left_diagonal[row + col]
+        ):
+            columns[col] = 1
+            right_diagonal[row - col + queens - 1] = 1
+            left_diagonal[row + col] = 1
+            board[row] = col
 
-    def process(self, row=0):
-        if row == self.queens:
-            self.solutions += 1
-            if self.db:
-                self.db.add(Solution(self.queens, self.board))
-                self.db.commit()
-            return
+            new_solutions = backtrackWithBitarraySolution(
+                queens, columns, left_diagonal,  right_diagonal, board, row=row + 1)
+            solutions.extend(new_solutions)
 
-        for col in range(0, self.queens):
-            if (
-                not self.columns[col]
-                and not self.right_diagonal[row - col + self.queens - 1]
-                and not self.left_diagonal[row + col]
-            ):
-                self.columns[col] = 1
-                self.right_diagonal[row - col + self.queens - 1] = 1
-                self.left_diagonal[row + col] = 1
-                self.board[row][col] = 1
+            columns[col] = 0
+            right_diagonal[row - col + queens - 1] = 0
+            left_diagonal[row + col] = 0
+            board[row] = 0
 
-                self.process(row + 1)
-
-                self.columns[col] = 0
-                self.right_diagonal[row - col + self.queens - 1] = 0
-                self.left_diagonal[row + col] = 0
-                self.board[row][col] = 0
-
-        return False
+    return solutions
