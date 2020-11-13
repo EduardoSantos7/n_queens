@@ -32,17 +32,21 @@ def solve_n_queens(queens, use_db=True):
     if solutions:
         print(f"{solutions} solutions in {e - s} seconds")
     else:
-        print(f'No solutions for {queens} queens')
+        print(f"No solutions for {queens} queens")
 
     return solutions or 0
 
 
 if __name__ == "__main__":
     user_input = input("Type a number N (board of NxN and N queens) or q to finish: ")
-    while user_input != 'q':
+    while user_input != "q":
         if user_input.isdecimal():
             n = int(user_input)
-            solve_n_queens(n, )
+            solve_n_queens(
+                n,
+            )
         else:
             print("Please type only numbers")
-        user_input = input("Type a number N (board of NxN and N queens) or q to finish: ")
+        user_input = input(
+            "Type a number N (board of NxN and N queens) or q to finish: "
+        )

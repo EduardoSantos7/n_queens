@@ -14,10 +14,10 @@ class BacktrackWithBitarraySolution:
         self.queens = N
         self.solutions = 0
         self.db = db
-        self.columns = bitarray([False for _ in range(2*N)])
+        self.columns = bitarray([False for _ in range(2 * N)])
         self.board = [[0 for _ in range(N)] for _ in range(N)]
-        self.left_diagonal = bitarray([False for _ in range(2*N)])
-        self.right_diagonal = bitarray([False for _ in range(2*N)])
+        self.left_diagonal = bitarray([False for _ in range(2 * N)])
+        self.right_diagonal = bitarray([False for _ in range(2 * N)])
 
     def process(self, row=0):
         if row == self.queens:
@@ -28,7 +28,11 @@ class BacktrackWithBitarraySolution:
             return
 
         for col in range(0, self.queens):
-            if not self.columns[col] and not self.right_diagonal[row-col+self.queens-1] and not self.left_diagonal[row+col]:
+            if (
+                not self.columns[col]
+                and not self.right_diagonal[row - col + self.queens - 1]
+                and not self.left_diagonal[row + col]
+            ):
                 self.columns[col] = 1
                 self.right_diagonal[row - col + self.queens - 1] = 1
                 self.left_diagonal[row + col] = 1

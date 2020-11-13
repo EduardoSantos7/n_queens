@@ -1,5 +1,4 @@
 class Board:
-
     def __init__(self, N):
         """Represent an NxN chess board
 

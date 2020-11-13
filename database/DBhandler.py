@@ -14,13 +14,18 @@ load_dotenv()
 
 
 base = declarative_base()
-SOLUTIONS_ID = Sequence('solutions_id_seq')
+SOLUTIONS_ID = Sequence("solutions_id_seq")
 
 
 class Solution(base):
-    __tablename__ = 'solutions'
+    __tablename__ = "solutions"
 
-    id = Column(Integer, SOLUTIONS_ID, primary_key=True, server_default=SOLUTIONS_ID.next_value())
+    id = Column(
+        Integer,
+        SOLUTIONS_ID,
+        primary_key=True,
+        server_default=SOLUTIONS_ID.next_value(),
+    )
     queens = Column(Integer, nullable=False, index=True)
     bt_solution = Column(postgresql.ARRAY(Integer, dimensions=2), nullable=False)
 
